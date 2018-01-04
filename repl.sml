@@ -128,11 +128,7 @@ fun apply_cmd (cmd : REPLCmd) (e : Env) =
     )
 
 fun repl e = (
-  (*
-  print (string_of_env e) ;
-  print "\n" ;
-  *)
-  print ">> " ;
+  (if Posix.ProcEnv.isatty Posix.FileSys.stdin then print ">> " else ()) ;
   let val inp = TextIO.inputLine TextIO.stdIn in
     case inp of
       NONE => ()
