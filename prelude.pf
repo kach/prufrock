@@ -1,0 +1,16 @@
+# ./repl < prelude.pf
+
+# Defining natural numbers
+Assert nat   Type 0
+Assert O     $nat
+Assert S     pi _ : $nat => $nat
+
+# Defining "even"
+Assert ev    pi _ : $nat => Prop
+Assert ev_O  <$ev $O>
+Assert ev_SS pi n : $nat => (pi _ : <$ev $n> => <$ev <$S <$S $n>>>)
+
+# A proof that two is even.
+Check        <<$ev_SS $O> $ev_O>
+
+Dump
