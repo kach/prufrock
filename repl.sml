@@ -1,8 +1,5 @@
 (* I have measured out my life with coffee spoons... *)
 
-(* use "combo.sml"; *)
-(* use "../prufrock.sml"; *)
-
 datatype REPLCmd
   = RComment
   | RCheck of Term
