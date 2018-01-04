@@ -5,4 +5,5 @@ Terms of an affline variant of the calculus of inductive constraints.
 
 Prufrock is a literary proof assistant.
 
-Plan accordingly.
+(Oh, do not ask, "What is it?"
+ Let us go and make our visit.)

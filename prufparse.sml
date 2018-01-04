@@ -1,3 +1,8 @@
+(* And indeed there will be time
+ * To wonder, "Do I dare?" and, "Do I dare?"
+ * Time to turn back and descend the stair,
+ * With a bald spot in the middle of my hair —
+ *)
 
 signature PARSER = sig
   eqtype tok
