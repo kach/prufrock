@@ -289,6 +289,7 @@ Qed.
 
 *)
 
+(*
 val e = env.of_raw [
     ("nat", TType 0),
     ("O", TVar "nat"),
@@ -324,4 +325,4 @@ val main = (
   print (string_of_env e) ;
   print "\n\n"
 )
-
+*)
