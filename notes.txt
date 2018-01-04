@@ -21,6 +21,7 @@ http://courses.cs.washington.edu/courses/cse341/04wi/lectures/09-ml-modules.html
 http://www.cs.cmu.edu/~rwh/isml/book.pdf
 https://www.cs.cmu.edu/~rwh/introsml/core/
 http://www.ccs.neu.edu/home/matthias/BTML/SML/
+https://thebreakfastpost.com/2015/06/10/standard-ml-and-how-im-compiling-it/
 
 MISC
 ----
