@@ -1,4 +1,9 @@
-# ./repl < prelude.pf
+# S'io credesse che mia risposta fosse
+# A persona che mai tornasse al mondo,
+# Questa fiamma staria senza piu scosse.
+# Ma percioche giammai di questo fondo
+# Non torno vivo alcun, s'i'odo il vero,
+# Senza tema d’infamia ti rispondo.
 
 # Defining natural numbers
 Assert nat   Type 0
@@ -11,6 +16,26 @@ Assert ev_O  <$ev $O>
 Assert ev_SS pi n : $nat => (pi _ : <$ev $n> => <$ev <$S <$S $n>>>)
 
 # A proof that two is even.
-Check        <<$ev_SS $O> $ev_O>
+Check <<$ev_SS $O> $ev_O>
 
-Dump
+
+
+
+Assert person Type 0
+
+Assert loves pi a : $person => pi b : $person => Prop
+Assert cupid pi a : $person => pi b : $person => <<$loves $a> $b>
+
+Assert hates pi a : $person => pi b : $person => Prop
+Assert jealous pi a : $person => pi b : $person => pi c : $person => pi _ : <<$loves $a> $b> => pi _ : <<$loves $a> $c> => <<$hates $b> $c>
+
+Assert Ada $person
+Assert Bob $person
+Assert Cam $person
+Define ab <<$cupid $Ada> $Bob>
+Define ac <<$cupid $Ada> $Cam>
+Define ht <<<<<$jealous $Ada> $Bob> $Cam> $ab> $ac>
+Check $ab
+Check $ac
+Check $jealous
+Check $ht

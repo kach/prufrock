@@ -81,8 +81,8 @@ fun freein (t : Term) (e : Env) : Name list =
   of TProp   => []
    | TType n => []
    | TVar  n => (case env.lookup e n of NONE => [n] | _ => [])
-   | TPi     (n, t', v) => freein v (env.insert e n v)
-   | TLambda (n, t', v) => freein v (env.insert e n v)
+   | TPi     (n, t', v) => (freein v (env.insert e n v)) @ (freein t' e)
+   | TLambda (n, t', v) => (freein v (env.insert e n v)) @ (freein t' e)
    | TApp (f, a) => (freein f e) @ (freein a e)
 
 (* ...no doubt, an easy tool,

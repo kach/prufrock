@@ -5,6 +5,7 @@ datatype REPLCmd
   | RCheck of Term
   | RShow of Name
   | RAssert of Name * Term
+  | RDefine of Name * Term
   | RDump
 
 local
@@ -91,6 +92,9 @@ in
     || ws ~ $"Assert" ~ ws1 ~ p_name ~ ws1 ~ p_term ~ ws ~ (maybe p_cmt)
     @@ (fn (_,(_,(_,(n,(_,(t,_)))))) => RAssert (n, t))
 
+    || ws ~ $"Define" ~ ws1 ~ p_name ~ ws1 ~ p_term ~ ws ~ (maybe p_cmt)
+    @@ (fn (_,(_,(_,(n,(_,(t,_)))))) => RDefine (n, t))
+
     || ws ~ $"Dump" ~ ws ~ (maybe p_cmt)
     @@ (fn _ => RDump)
 
@@ -120,6 +124,11 @@ fun apply_cmd (cmd : REPLCmd) (e : Env) =
 
   | RAssert (n, t) =>
     env.insert e n t
+
+  | RDefine (n, t) => (
+      env.insert e n (typecheck t e)
+      handle TypeError s => (print ("Type error: "^s^"\n") ; e)
+    )
   
   | RDump => (
       print (string_of_env e) ;
