@@ -7,6 +7,8 @@ datatype REPLCmd
   | RAssert of Name * Term
   | RDefine of Name * Term
   | RDump
+  | RRand
+  | RConflict
 
 local
   open StringParser
@@ -98,12 +100,69 @@ in
     || ws ~ $"Dump" ~ ws ~ (maybe p_cmt)
     @@ (fn _ => RDump)
 
+    || ws ~ $"Rand" ~ ws ~ (maybe p_cmt)
+    @@ (fn _ => RRand)
+
+    || ws ~ $"Conflict" ~ ws ~ (maybe p_cmt)
+    @@ (fn _ => RConflict)
+
     || ws ~ (maybe p_cmt)
     @@ (fn _ => RComment)
 
     )
 
 end;
+
+
+
+val urandom = BinIO.openIn("/dev/urandom");
+
+
+fun do_rand e =
+  let
+    fun rand_byte () : int =
+      Word8.toInt (valOf (BinIO.input1 urandom))
+      ;
+
+    fun rand_int () : int =
+      (rand_byte ()) +
+      (rand_byte () * 0x100) +
+      (rand_byte () * 0x10000)
+
+    fun rand_key e =
+      let val e' = env.to_raw e in
+        #1 (List.nth(e', rand_int () mod length e'))
+      end
+      ;
+
+    fun try_rand_pair e =
+      let val f = rand_key e;
+          val a = rand_key e;
+          val t = TApp (TVar f, TVar a)
+      in
+        (SOME (f, a, typecheck t e))
+        handle TypeError s => NONE
+      end
+      ;
+
+    fun get_rand_pair e =
+      case try_rand_pair e of
+        SOME x => x
+      | NONE => get_rand_pair e
+
+  in
+    let val (f, a, t) =  get_rand_pair e;
+        val n = (f^" ["^a^"]") in
+      env.insert e n t
+    end
+  end
+
+
+fun do_conflict (e : Env) =
+  if List.exists (fn x => x = TVar "conflict")
+            (map #2 (env.to_raw e))
+  then e else do_conflict (do_rand e)
+
 
 fun apply_cmd (cmd : REPLCmd) (e : Env) =
   case cmd of
@@ -135,6 +194,10 @@ fun apply_cmd (cmd : REPLCmd) (e : Env) =
       print "\n" ;
       e
     )
+
+  | RRand => do_rand e
+
+  | RConflict => do_conflict e
 
 fun repl e = (
   (if Posix.ProcEnv.isatty Posix.FileSys.stdin then print ">> " else ()) ;

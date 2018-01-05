@@ -1,0 +1,21 @@
+love_hate_conflict [Fay] [Bob] [cupid [Fay] [Bob]] [vengeful [Ada] [Bob] [Fay] [cupid [Ada] [Bob]] [jealous [Fay] [Ada] [Fay] [cupid [Fay] [Ada]] [cupid [Fay] [Fay]]]]	⟼  conflict
+
+Bob falls in love with Fay.
+
+Bob is very close with Ada, his sister.
+Ada loves Cam, and Fay loves Cam, so Fay is jealous of Ada and hates Ada.
+Bob feels he can't love someone who hates his sister.
+
+
+
+
+love_hate_conflict [Eve] [Fay] [cupid [Eve] [Fay]] [vengeful [Cam] [Fay] [Eve] [cupid [Cam] [Fay]] [betrayed [Cam] [Eve] [Fay] [cupid [Eve] [Cam]] [lovep [Cam] [Fay] [cupid [Cam] [Fay]]]]]
+
+Fay's sister is named Eve.
+
+Fay and Cam fall in love.
+Cam cheats on Fay with Eve, but Eve doesn't realize.
+Now Eve hates Cam.
+
+Fay still loves Cam.
+Fay starts to hate Eve for hating Cam.

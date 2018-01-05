@@ -5,37 +5,57 @@
 # Non torno vivo alcun, s'i'odo il vero,
 # Senza tema d’infamia ti rispondo.
 
-# Defining natural numbers
-Assert nat   Type 0
-Assert O     $nat
-Assert S     pi _ : $nat => $nat
+# # Defining natural numbers
+# Assert nat   Type 0
+# Assert O     $nat
+# Assert S     pi _ : $nat => $nat
 
-# Defining "even"
-Assert ev    pi _ : $nat => Prop
-Assert ev_O  <$ev $O>
-Assert ev_SS pi n : $nat => (pi _ : <$ev $n> => <$ev <$S <$S $n>>>)
+# # Defining "even"
+# Assert ev    pi _ : $nat => Prop
+# Assert ev_O  <$ev $O>
+# Assert ev_SS pi n : $nat => (pi _ : <$ev $n> => <$ev <$S <$S $n>>>)
 
-# A proof that two is even.
-Check <<$ev_SS $O> $ev_O>
+# # A proof that two is even.
+# Check <<$ev_SS $O> $ev_O>
 
 
 
+Assert conflict Type 0
 
 Assert person Type 0
 
 Assert loves pi a : $person => pi b : $person => Prop
 Assert cupid pi a : $person => pi b : $person => <<$loves $a> $b>
+Assert lovep pi a : $person => pi b : $person => pi _ : <<$loves $a> $b> => <<$loves $b> $a>
 
 Assert hates pi a : $person => pi b : $person => Prop
+Assert hatep pi a : $person => pi b : $person => pi _ : <<$hates $a> $b> => <<$hates $b> $a>
 Assert jealous pi a : $person => pi b : $person => pi c : $person => pi _ : <<$loves $a> $b> => pi _ : <<$loves $a> $c> => <<$hates $b> $c>
+Assert betrayed pi a : $person => pi b : $person => pi c : $person => pi _ : <<$loves $b> $a> => pi _ : <<$loves $c> $a> => <<$hates $a> $b>
+Assert vengeful pi a : $person => pi b : $person => pi c : $person => pi _ : <<$loves $a> $b> => pi _ : <<$hates $a> $c> => <<$hates $c> $b>
+
+Assert love_hate_conflict pi a : $person => pi b : $person => pi _ : <<$loves $a> $b> => pi _ : <<$hates $a> $b> => $conflict
 
 Assert Ada $person
 Assert Bob $person
 Assert Cam $person
-Define ab <<$cupid $Ada> $Bob>
-Define ac <<$cupid $Ada> $Cam>
-Define ht <<<<<$jealous $Ada> $Bob> $Cam> $ab> $ac>
-Check $ab
-Check $ac
-Check $jealous
-Check $ht
+Assert Dan $person
+Assert Eve $person
+Assert Fay $person
+#Assert Guy $person
+#Assert Hal $person
+#Assert Ido $person
+#Assert Jon $person
+#Assert Kay $person
+
+# Define ab <<$cupid $Ada> $Bob>
+# Define ac <<$cupid $Ada> $Cam>
+# Define ht <<<<<$jealous $Ada> $Bob> $Cam> $ab> $ac>
+# Check $ab
+# Check $ac
+# Check $jealous
+# Check $ht
+# Check $love_hate_conflict
+
+Conflict
+Dump

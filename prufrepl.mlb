@@ -1,4 +1,5 @@
 $(SML_LIB)/basis/basis.mlb
+prufdict.sml
 prufrock.sml
 prufparse.sml
-repl.sml
+prufrepl.sml

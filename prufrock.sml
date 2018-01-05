@@ -3,60 +3,6 @@
  * To lead you to an overwhelming question...
  *)
 
-signature DICT =
-  sig
-    type (''k, 'v) dict
-    exception DictError of string
-    val empty : (''k, 'v) dict
-    val of_raw : (''k * 'v) list -> (''k, 'v) dict
-    val to_raw : (''k, 'v) dict -> (''k * 'v) list 
-    val insert : ( 'k, 'v) dict ->  'k -> 'v -> ('k, 'v) dict
-    val lookup : (''k, 'v) dict -> ''k -> 'v option
-    val search : (''k, 'v) dict -> ''k -> 'v
-    val member : (''k, 'v) dict -> ''k -> bool
-  end
-
-structure assoc :> DICT =
-  struct
-    type (''k, 'v) dict = (''k * 'v) list
-    exception DictError of string
-
-    val empty = []
-
-    fun insert (d : ('k, 'v) dict) (k : 'k) (v : 'v) : ('k, 'v) dict =
-        (k, v) :: d
-
-    fun of_raw (d' : (''k * 'v) list) : (''k, 'v) dict = d'
-    fun to_raw (d' : (''k, 'v) dict) : (''k * 'v) list = d'
-
-    fun lookup (d : (''k, 'v) dict) (k : ''k) : 'v option =
-        case d
-         of [] => NONE
-          | ((k', v') :: d') =>
-            if k' = k then
-              SOME v'
-            else
-              lookup d' k
-
-    fun search (d : (''k, 'v) dict) (n : ''k) : 'v =
-      let val v' = lookup d n in
-        case v'
-         of NONE => raise DictError "Key not found"
-          | SOME v => v
-      end
-
-    fun member (d : (''k, 'v) dict) (n : ''k) : bool =
-      let val v' = lookup d n in
-        case v'
-         of NONE   => false
-          | SOME v => true
-      end
-
-  end
-
-
-
-
 type Name = string
 
 datatype Term
@@ -155,7 +101,12 @@ fun normalize (t : Term) (e : Env) : Term =
    | TType n => TType n
    | TVar n  =>                                             (* Delta, Zeta? *)
      (case env.lookup e n
-      of SOME v => normalize v e
+      of SOME v => (* normalize v e *) TVar n
+                    (* I think this is wrong -- it's looking things up in the
+                       type environment. Most values will get substituted in;
+                       the only case where this is invoked is to access
+                       something predefined in the environment. But *which*
+                       environment? *)
        | NONE => TVar n  (* fly! be free! *)
      )
    | TPi (n, t', v) => TPi (n, normalize t' e, normalize v e)
@@ -289,7 +240,6 @@ Qed.
 
 *)
 
-(*
 val e = env.of_raw [
     ("nat", TType 0),
     ("O", TVar "nat"),
@@ -305,6 +255,7 @@ val e = env.of_raw [
     ("ev_2", TApp (TVar "ev", TApp (TVar "S", (TApp (TVar "S", TVar "O")))))
 ]
 
+(*
 (* A term, really. *)
 val ev_2_pf = TApp (TApp (TVar "ev_SS", TVar "O"), TVar "ev_O")
 
