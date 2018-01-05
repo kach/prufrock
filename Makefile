@@ -6,3 +6,6 @@ mlkit : prufrepl.mlb prufdict.sml prufcore.sml prufparse.sml prufrepl.sml
 
 smlnj : prufdict.sml prufcore.sml prufparse.sml prufrepl.sml
 	sml prufdict.sml prufcore.sml prufparse.sml prufrepl.sml
+
+polyml : prufdict.sml prufcore.sml prufparse.sml prufrepl.sml
+	poly --use "prufdict.sml" --use "prufcore.sml" --use "prufparse.sml" --use "prufrepl.sml"
